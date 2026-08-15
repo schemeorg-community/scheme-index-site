@@ -13,7 +13,9 @@ pipeline {
 
         stage('Checkout') {
             steps {
-                git changelog: true, branch: "${BRANCH_NAME}", url: 'https://github.com/schemeorg-community/scheme-index-site'
+                checkout scmGit(
+                    userRemoteConfigs: [[ url: 'https://github.com/schemeorg-community/scheme-index-site' ]],
+                    branches: [[name: "${BRANCH_NAME}"]])
             }
         }
 

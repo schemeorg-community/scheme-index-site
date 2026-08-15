@@ -10,8 +10,8 @@ csc buildfilters.scm
 
 echo 'Converting definitions to json'
 cd $ROOT
-./scheme-index-util/buildtypes types/index.scm scheme-index-app/src/assets/types.json
-./scheme-index-util/buildfilters filters/index.scm scheme-index-app/src/assets/filters.json
+./scheme-index-util/buildtypes data/types/index.scm scheme-index-app/src/assets/types.json
+./scheme-index-util/buildfilters data/filters/index.scm scheme-index-app/src/assets/filters.json
 
 echo 'Building scheme index app'
 cd $ROOT/scheme-index-app/
