@@ -1,4 +1,5 @@
 = Scheme index site
+:icons: font
 :toc: left
 
 Static site frontend for https://github.com/schemeorg-community/scheme-index content.
@@ -7,17 +8,20 @@ Deployed at https://index.scheme.org.
 
 == Building static site GUI
 
-. Make sure git submodule containing the data is checked out
-+
+[IMPORTANT]
+.Make sure git submodule containing the data is checked out
+====
 [code,sh]
 ----
 git submodule update --init
 ----
+====
+
 . (option 1) Build natively
 .. Install:
-* Chicken scheme compiler;
-* `json`, `matchable`, `srfi 1` chicken eggs;
-* nodejs and npm.
+... Chicken scheme compiler;
+... `json`, `matchable`, `srfi 1` chicken eggs;
+... nodejs and npm.
 .. Execute `bash build.sh` in `build` directory
 . (option 2) Build with docker
 .. Install docker
@@ -25,7 +29,7 @@ git submodule update --init
 +
 [code,sh]
 ----
-docker build -f ./build/Dockerfile . -t scheme-index:latest
+docker build -f ./Dockerfile .. -t scheme-index:latest
 docker create --name dummy scheme-index:latest
 docker cp dummy:/schemeindex.zip ./schemeindex.zip
 docker rm -f dummy
@@ -45,20 +49,22 @@ The site uses html5 routing. To enable entering the site from any route, you hav
 
 == Running in development
 
-. Make sure git submodule containing the data is checked out
-+
+[IMPORTANT]
+.Make sure git submodule containing the data is checked out
+====
 [code,sh]
 ----
 git submodule update --init
 ----
+====
 
 === Natively
 
-.. Install:
-* Chicken scheme compiler;
-* `json`, `matchable`, `srfi 1` chicken eggs;
-* nodejs and npm.
-.. Build json data files from primary sexpr data (only need to do it once initially; or when you want to rebuild from latest upstream data):
+. Install:
+.. Chicken scheme compiler;
+.. `json`, `matchable`, `srfi 1` chicken eggs;
+.. nodejs and npm.
+. Build json data files from primary sexpr data (only need to do it once initially; or when you want to rebuild from latest upstream data):
 +
 [code,sh]
 ----
@@ -69,10 +75,10 @@ cd ..
 ./scheme-index-util/buildtypes data/types/index.scm scheme-index-app/src/assets/types.json
 ./scheme-index-util/buildfilters data/filters/index.scm scheme-index-app/src/assets/filters.json
 ----
-.. From `scheme-index-app`:
-* Execute `npm i` (Only need to do it once initially, and after package.json changes);
-* Run `npm run start`
-.. The site will be available at http://localhost:4200.
+. From `scheme-index-app`:
+.. Execute `npm i` (Only need to do it once initially, and after package.json changes);
+.. Run `npm run start`
+. The site will be available at http://localhost:4200.
 
 === Docker compose
 
