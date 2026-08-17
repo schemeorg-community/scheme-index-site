@@ -93,7 +93,6 @@ export class SearchItemComponent {
             let nextLiteral = '';
             for (const l of ['...', '(', ')', ...literals]) {
                 const i = pattern.indexOf(l, index);
-                console.log(pattern, l, index, i);
                 if (i == -1)
                     continue;
                 //do not highlight if it's inside another identifier

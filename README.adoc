@@ -71,9 +71,9 @@ git submodule update --init
 cd scheme-index-util
 csc buildtypes.scm
 csc buildfilters.scm
-cd ..
-./scheme-index-util/buildtypes data/types/index.scm scheme-index-app/src/assets/types.json
-./scheme-index-util/buildfilters data/filters/index.scm scheme-index-app/src/assets/filters.json
+cd ../data
+../scheme-index-util/buildtypes types/index.scm ../scheme-index-app/src/assets/types.json
+../scheme-index-util/buildfilters filters/index.scm ../scheme-index-app/src/assets/filters.json
 ----
 . From `scheme-index-app`:
 .. Execute `npm i` (Only need to do it once initially, and after package.json changes);
