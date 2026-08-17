@@ -1,4 +1,4 @@
-import { Component, HostBinding, inject } from '@angular/core';
+import { Component, HostBinding, inject, ChangeDetectionStrategy } from '@angular/core';
 import { NavigationEnd, Router, RouterModule  } from '@angular/router';
 import { filter, map, Observable, startWith, combineLatest } from 'rxjs';
 import { IndexService } from './index.service';
@@ -16,6 +16,7 @@ import { CommonModule } from '@angular/common';
     ],
     selector: 'app-root',
     templateUrl: './app.component.html',
+    changeDetection: ChangeDetectionStrategy.Eager,
     styleUrls: ['./app.component.scss']
 })
 export class AppComponent {

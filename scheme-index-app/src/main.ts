@@ -1,4 +1,4 @@
-import { provideHttpClient } from '@angular/common/http';
+import { provideHttpClient, withXhr } from '@angular/common/http';
 import { isDevMode, provideZoneChangeDetection } from '@angular/core';
 import { bootstrapApplication } from '@angular/platform-browser';
 import { provideRouter } from '@angular/router';
@@ -23,7 +23,7 @@ bootstrapApplication(AppComponent, {
             path: 'filterset/:filterset/:lib/:name',
             component: SingleEntryPageComponent
         }]),
-        provideHttpClient(),
+        provideHttpClient(withXhr()),
         provideServiceWorker('ngsw-worker.js', {
             enabled: !isDevMode(),
             registrationStrategy: 'registerWhenStable:30000'

@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, Input, Output, EventEmitter } from '@angular/core';
+import { Component, Input, Output, EventEmitter, ChangeDetectionStrategy } from '@angular/core';
 import { ReplaySubject, Observable, combineLatest, map } from 'rxjs';
 
 @Component({
@@ -8,6 +8,7 @@ import { ReplaySubject, Observable, combineLatest, map } from 'rxjs';
     ],
     selector: 'app-pager',
     templateUrl: './pager.component.html',
+    changeDetection: ChangeDetectionStrategy.Eager,
     styleUrls: ['./pager.component.scss']
 })
 export class PagerComponent {

@@ -1,5 +1,5 @@
 import { ReplaySubject, Observable, map, combineLatest, first } from 'rxjs';
-import { Component, ViewChild, ElementRef, inject } from '@angular/core';
+import { Component, ViewChild, ElementRef, inject, ChangeDetectionStrategy } from '@angular/core';
 import { ActivatedRoute, Router, RouterModule } from '@angular/router';
 import { IndexService } from '../index.service';
 import { IndexResponse, IndexQuery, SearchItem } from '../index.types';
@@ -22,6 +22,7 @@ import { LoaderComponent } from '../loader/loader.component';
     ],
     selector: 'app-search-page',
     templateUrl: './search-page.component.html',
+    changeDetection: ChangeDetectionStrategy.Eager,
     styleUrls: ['./search-page.component.scss']
 })
 export class SearchPageComponent {

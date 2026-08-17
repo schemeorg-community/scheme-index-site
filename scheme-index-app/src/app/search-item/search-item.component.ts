@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, Input } from '@angular/core';
+import { Component, Input, ChangeDetectionStrategy } from '@angular/core';
 import { Params, RouterModule } from '@angular/router';
 import { ReplaySubject, Observable, map } from 'rxjs';
 import { SearchItem, SearchItemSingle, Signature } from '../index.types';
@@ -11,6 +11,7 @@ import { SearchItem, SearchItemSingle, Signature } from '../index.types';
     ],
     selector: 'app-search-item',
     templateUrl: './search-item.component.html',
+    changeDetection: ChangeDetectionStrategy.Eager,
     styleUrls: ['./search-item.component.scss']
 })
 export class SearchItemComponent {

@@ -1,5 +1,5 @@
 import { Subject, ReplaySubject, combineLatest, first, debounceTime } from 'rxjs';
-import { Component, Input, Output, EventEmitter, HostListener, ElementRef, ViewChild, inject } from '@angular/core';
+import { Component, Input, Output, EventEmitter, HostListener, ElementRef, ViewChild, inject, ChangeDetectionStrategy } from '@angular/core';
 import { IndexQuery, IndexResponse, ResponseFacetValue } from '../index.types';
 import { faMagnifyingGlass, faFolderOpen, faFolderClosed, faCircleChevronLeft, faCircleChevronRight } from '@fortawesome/free-solid-svg-icons';
 import { IndexService } from '../index.service';
@@ -16,6 +16,7 @@ import { FacetFilterPipe } from '../facet-filter.pipe';
 ],
     selector: 'app-filter-pane',
     templateUrl: './filter-pane.component.html',
+    changeDetection: ChangeDetectionStrategy.Eager,
     styleUrls: ['./filter-pane.component.scss']
 })
 export class FilterPaneComponent {
