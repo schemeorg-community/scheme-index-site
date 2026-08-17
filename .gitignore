@@ -15,3 +15,5 @@ node_modules
 /solrhome/scmindex/data
 /client/cli/out
 *.log
+scheme-index-app/src/assets/filters.json
+scheme-index-app/src/assets/types.json

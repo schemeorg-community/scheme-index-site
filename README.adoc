@@ -1,138 +1,85 @@
-= Scheme index
+= Scheme index site
+:icons: font
 :toc: left
 
-Scheme index catalogs definitions of procedures, macros, values from scheme specifications and SRFI libraries, using sexpr textual format. Main points of interests is the `types` folder.
-This repository also provides complementary static site GUI. It's accessible at https://index.scheme.org . 
+Static site frontend for https://github.com/schemeorg-community/scheme-index content.
 
-== Identifiers definitions
+Deployed at https://index.scheme.org.
 
-Identifiers definitions are grouped into files (one file for each library) under `types/*.scm`, and a single root index file which defines names and paths to those files `types/index.scm`.
+== Building static site GUI
 
-Index file is a list of pairs - where `car` is a symbolic library name, and `cdr` is associated information regarding definitions to load from. `cdr` may be an alist, with following fields:
+[IMPORTANT]
+.Make sure git submodule containing the data is checked out
+====
+[code,sh]
+----
+git submodule update --init
+----
+====
 
-* `'file` - path from where to load definitions.
+. (option 1) Build natively
+.. Install:
+... Chicken scheme compiler;
+... `json`, `matchable`, `srfi 1` chicken eggs;
+... nodejs and npm.
+.. Execute `bash build.sh` in `build` directory
+. (option 2) Build with docker
+.. Install docker
+.. Execute in `build` directory:
++
+[code,sh]
+----
+docker build -f ./Dockerfile .. -t scheme-index:latest
+docker create --name dummy scheme-index:latest
+docker cp dummy:/schemeindex.zip ./schemeindex.zip
+docker rm -f dummy
+----
+. You'll find `schemeindex.zip` after successful build, which you can deploy from any web server.
 
-* `'exclude` - a list of definitions to ignore from the file. 
+If you plan serving not from root, edit `index.html` file and change `<base href=".">` to point to appropriate prefix.
 
-Alternatively, `cdr` might be a string, in which case it's treated as a file path.
+The site uses html5 routing. To enable entering the site from any route, you have to configure web server to serve index.html for paths that don't match static resources. E.g., in nginx:
 
-```
-(
-    ((scheme base) . "types/scheme.base.scm")
-    ((scheme r5rs) . ((file . "types/r5rs.scm")
-                      (exclude . (transcript-on transcript-off))))
-)
-```
+[code,nginx]
+----
+        location / {
+            try_files $uri $uri/ /index.html =404;
+        }
+----
 
-Each library definition file is a list of entries, where each entry is an association list, using symbols as keys. Each entry either describes a group of identifiers, or a single identifier. 
+== Running in development
 
-Group has following properties:
+[IMPORTANT]
+.Make sure git submodule containing the data is checked out
+====
+[code,sh]
+----
+git submodule update --init
+----
+====
 
-[cols="1m,3a"]
-|===
-| key
-| description
+=== Natively
 
-| group
-| A list of identifiers under the group. Each entry must have format as described under a table for single idenfier entry.
-
-| desc
-| A textual description applicable for entire group
-|===
-
-Single identifier has following properties:
-
-[cols="1m,3a"]
-|===
-| key 
-| description
-
-| name
-| The name of the function / syntax / value. The name doesn't have to be unique - in particular with procedures, definition is repeated for all possible invocation overloads with different parameter counts. Required.
-
-| signature
-| S-expr defining signature. The format depends on a type (function / syntax / value) being described.
-
-== Function
-
-In case of function, the format is either `(lambda (<parameter> ...) <return type>)` or `(case-lambda ((<parameter> ...) <return type>) ...)`.
-
-Each parameter is either of the form `(<type> param-name)` or just `param-name`, when type is "any". Each parameter may be succeeded by a `...` literal to indicate varargs / repetition.
-
-Parameter type is either:
-
-* a predicate name (eg. `list?`);
-
-* a type union in the form of `(or <type> ...)` (eg. `(or list? number?)`). When using `or`, `#f` might be used as a type inside of it due to its common appearance as a "null" value.
-
-Return type can be same as parameter type described above, plus:
-
-* `undefined`, indicating a value that shouldn't be used in portable code (eg. result of `for-each`);
-
-* `*`, indicating a useful value but of unknown type.
-
-* `(values <type> ...)` form when the function returns more than one value.
-
-== Syntax
-
-In case of syntax, the format is `(syntax-rules (<keyword> ...) (<pattern> <optional-return-type>) ...)`
-
-Pattern should be: symbol, `.`, `...`, or grouping of patterns inside `()`. If optional return type is provided, it describes
-the resultant type when syntax is used as an expression. As a hatch to rendering outside of parens, use `(_append )` form, which concatenates its arguments.
-
-== Value
-
-In case of simple value, the format is `(value <type>)`
-
-where type is same as described under functions.
-
-| tags
-| A list of symbols. Tags don't have inherent special treatment (ie., definition can make use of any tag it wants). 
-Currently used tags are described in <<Tags>>
-
-| subsigs
-| Additional elaboration of signatures for the parameters / returns / syntax fragments / datastructure content. Each entry in this list is a list,
- where first element is a name (corresponding to parameter / syntax fragment / etc), and second parameter is its signature. The signature can be either 
-one of as described in `signature` section, as well as additionally: 
-
-* `(pattern <pattern> ...)` - describes subsyntax pattern, expanding template variables used in main signature of the syntax;
-
-* `(alist <car> <cdr>)` - describes an alist datastrucutre, where `<car>` and `<cdr>` has same format as function parameter definition;
-
-* `(list <element>)` - describes a list datastrucutre, where `<element>` has same format as function parameter definition;
-
-* `(vector <element>)` - describes a vector datastrucutre, where `<element>` has same format as function parameter definition.
-
-| desc
-| Textual description.
-
-|===
-
-== Filterset definitions
-
-Filterset is a coarse filter, and defines which libraries to include (and optionally how to rename them). Filterset definitions are structured into files one for each filterset option under `filters/*.scm`, and a single root index file which defines names and paths to those files `filters/index.scm`.
-
-Index should be a list of alists. Each alist contains three fields:
-
-* `code` - used in links;
-
-* `name` - displayed text;
-
-* `file` - associated filterset definition file.
-
-Filterset definition file should be a list of pairs. `car` is a symbolic library name (matching what is defined in index for identifiers definitions). `cdr` is either a symbolic library name (in which case, all the usages of library in `car` are renamed to what is in `cdr`), or a `#t` value (indicating to include library in `car` as is, without a rename).
-
-== Compiling / running static site GUI
-
-=== Native
-
-Open `build` directory and execute `bash build.sh`. Requires:
-
-. Chicken scheme compiler, with json, matchable and srfi 1 eggs installed;
-. Nodejs / npm installation.
-
-After building, you'll find `schemeindex.zip` in build directory, which you can unzip and deploy from any web server. If you plan serving not from root, edit `index.html` file and change `<base href=".">` to point to appropriate prefix.
+. Install:
+.. Chicken scheme compiler;
+.. `json`, `matchable`, `srfi 1` chicken eggs;
+.. nodejs and npm.
+. Build json data files from primary sexpr data (only need to do it once initially; or when you want to rebuild from latest upstream data):
++
+[code,sh]
+----
+cd scheme-index-util
+csc buildtypes.scm
+csc buildfilters.scm
+cd ..
+./scheme-index-util/buildtypes data/types/index.scm scheme-index-app/src/assets/types.json
+./scheme-index-util/buildfilters data/filters/index.scm scheme-index-app/src/assets/filters.json
+----
+. From `scheme-index-app`:
+.. Execute `npm i` (Only need to do it once initially, and after package.json changes);
+.. Run `npm run start`
+. The site will be available at http://localhost:4200.
 
 === Docker compose
 
-Open `build` directory and execute `docker compose up`. The site will be available at `localhost:8080`.
+Run `docker compose up` from `build` directory, the site will be available at http://localhost:8080.
