@@ -49,7 +49,8 @@ export class FilterPaneComponent {
   searchForm!: ElementRef;
 
   @HostListener('window:keydown.control./', ['$event'])
-  focusQueryField(event: KeyboardEvent) {
+  focusQueryField(evt: Event) {
+      const event = evt as KeyboardEvent;
       event.preventDefault();
       this.queryTextfield.nativeElement.focus();
   }
