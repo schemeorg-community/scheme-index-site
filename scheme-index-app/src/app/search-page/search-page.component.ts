@@ -87,8 +87,7 @@ export class SearchPageComponent {
             if (this.resultsContainer)
                 this.resultsContainer.nativeElement.scroll({ 
                     top: 0, 
-                    left: 0, 
-                    behavior: 'smooth' 
+                    left: 0
                 });
         });
         this.filterpaneParams = combineLatest([this.indexQuery, this.response]).pipe(map(([query, response]) => {

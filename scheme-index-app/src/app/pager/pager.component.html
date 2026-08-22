@@ -1,5 +1,5 @@
 <footer class="pager" aria-label="Pager">
-  @for (page of pages | async; track page) {
+  @for (page of pages | async; track $index) {
     @if (page.gap) {
       <span class="pager__gap">...</span>
     }
