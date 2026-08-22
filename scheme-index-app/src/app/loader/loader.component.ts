@@ -11,7 +11,7 @@ import { BehaviorSubject, Observable } from "rxjs";
         FontAwesomeModule
     ],
     templateUrl: './loader.component.html',
-    changeDetection: ChangeDetectionStrategy.Eager,
+    changeDetection: ChangeDetectionStrategy.OnPush,
     styleUrls: ['./loader.component.scss']
 })
 export class LoaderComponent {

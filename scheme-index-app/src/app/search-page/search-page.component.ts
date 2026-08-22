@@ -22,7 +22,7 @@ import { LoaderComponent } from '../loader/loader.component';
     ],
     selector: 'app-search-page',
     templateUrl: './search-page.component.html',
-    changeDetection: ChangeDetectionStrategy.Eager,
+    changeDetection: ChangeDetectionStrategy.OnPush,
     styleUrls: ['./search-page.component.scss']
 })
 export class SearchPageComponent {

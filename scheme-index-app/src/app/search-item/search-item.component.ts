@@ -11,7 +11,7 @@ import { SearchItem, SearchItemSingle, Signature } from '../index.types';
     ],
     selector: 'app-search-item',
     templateUrl: './search-item.component.html',
-    changeDetection: ChangeDetectionStrategy.Eager,
+    changeDetection: ChangeDetectionStrategy.OnPush,
     styleUrls: ['./search-item.component.scss']
 })
 export class SearchItemComponent {

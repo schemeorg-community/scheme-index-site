@@ -10,18 +10,18 @@ import { FacetFilterPipe } from '../facet-filter.pipe';
 
 @Component({
     imports: [
-    FormsModule,
-    FontAwesomeModule,
-    FacetFilterPipe
-],
+        FormsModule,
+        FontAwesomeModule,
+        FacetFilterPipe
+    ],
     selector: 'app-filter-pane',
     templateUrl: './filter-pane.component.html',
-    changeDetection: ChangeDetectionStrategy.Eager,
-    styleUrls: ['./filter-pane.component.scss']
+    styleUrls: ['./filter-pane.component.scss'],
+    changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class FilterPaneComponent {
-  private filtersetSvc = inject(IndexService);
 
+  private filtersetSvc = inject(IndexService);
 
   @Input()
   collapsed = false;

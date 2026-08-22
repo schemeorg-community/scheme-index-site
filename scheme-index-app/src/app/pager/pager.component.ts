@@ -8,7 +8,7 @@ import { ReplaySubject, Observable, combineLatest, map } from 'rxjs';
     ],
     selector: 'app-pager',
     templateUrl: './pager.component.html',
-    changeDetection: ChangeDetectionStrategy.Eager,
+    changeDetection: ChangeDetectionStrategy.OnPush,
     styleUrls: ['./pager.component.scss']
 })
 export class PagerComponent {

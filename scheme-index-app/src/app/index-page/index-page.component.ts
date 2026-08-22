@@ -13,12 +13,12 @@ import { LoaderComponent } from '../loader/loader.component';
     ],
     selector: 'app-index-page',
     templateUrl: './index-page.component.html',
-    changeDetection: ChangeDetectionStrategy.Eager,
+    changeDetection: ChangeDetectionStrategy.OnPush,
     styleUrls: ['./index-page.component.scss']
 })
 export class IndexPageComponent {
-    filtersetsService = inject(IndexService);
 
+    filtersetsService = inject(IndexService);
 
     filtersetGroups: Observable<FiltersetGroup[]>;
 
