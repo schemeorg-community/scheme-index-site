@@ -1,5 +1,5 @@
 import { ReplaySubject, Observable, map, combineLatest, first } from 'rxjs';
-import { Component, ViewChild, ElementRef, inject } from '@angular/core';
+import { Component, ViewChild, ElementRef, inject, ChangeDetectionStrategy } from '@angular/core';
 import { ActivatedRoute, Router, RouterModule } from '@angular/router';
 import { IndexService } from '../index.service';
 import { IndexResponse, IndexQuery, SearchItem } from '../index.types';
@@ -22,6 +22,7 @@ import { LoaderComponent } from '../loader/loader.component';
     ],
     selector: 'app-search-page',
     templateUrl: './search-page.component.html',
+    changeDetection: ChangeDetectionStrategy.OnPush,
     styleUrls: ['./search-page.component.scss']
 })
 export class SearchPageComponent {
@@ -86,8 +87,7 @@ export class SearchPageComponent {
             if (this.resultsContainer)
                 this.resultsContainer.nativeElement.scroll({ 
                     top: 0, 
-                    left: 0, 
-                    behavior: 'smooth' 
+                    left: 0
                 });
         });
         this.filterpaneParams = combineLatest([this.indexQuery, this.response]).pipe(map(([query, response]) => {

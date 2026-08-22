@@ -27,7 +27,7 @@
         }
       </div>
       <div class="filter-pane__facets">
-        @for (facet of facets; track facet) {
+        @for (facet of facets; track facet.title) {
           @if (facet.options.length) {
             <div class="filter-pane__facet-wrap">
               <fieldset class="filter-pane__facet">
@@ -60,7 +60,7 @@
                   </div>
                 }
                 @if (!facet.collapsed) {
-                  @for (option of facet.options | facetFilter: facet.filter; track option) {
+                  @for (option of facet.options | facetFilter: facet.filter; track option.value) {
                     <label class="filter-pane__facet-option checklist-item">
                       <input type="checkbox"
                         name="{{option.name}}"

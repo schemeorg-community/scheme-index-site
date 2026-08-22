@@ -1,4 +1,4 @@
-import { Component, inject } from '@angular/core';
+import { Component, inject, ChangeDetectionStrategy } from '@angular/core';
 import { Title } from '@angular/platform-browser';
 import { ActivatedRoute, RouterModule } from '@angular/router';
 import { Observable, mergeMap } from 'rxjs';
@@ -15,6 +15,7 @@ import { CommonModule } from '@angular/common';
     ],
     selector: 'app-single-entry-page',
     templateUrl: './single-entry-page.component.html',
+    changeDetection: ChangeDetectionStrategy.OnPush,
     styleUrls: ['./single-entry-page.component.scss']
 })
 export class SingleEntryPageComponent {

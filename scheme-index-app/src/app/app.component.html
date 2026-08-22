@@ -4,7 +4,7 @@
       <a href="https://scheme.org"
       class="navbar__link navbar__link--clickable navbar__link--schemeorg">Scheme.org</a>
     </li>
-    @for (item of navbarItems | async; track item) {
+    @for (item of navbarItems | async; track $index) {
       <ng-container *ngTemplateOutlet="navbaritem; context: {item: item}"/>
     }
   </ul>
@@ -46,7 +46,7 @@
           }
           @if (item.items.length > 0) {
             <ul class="navbar__list navbar__list--nestedlevel">
-              @for (item of item.items; track item) {
+              @for (item of item.items; track $index) {
                 <ng-container *ngTemplateOutlet="navbaritem; context: {item: item}" />
               }
             </ul>

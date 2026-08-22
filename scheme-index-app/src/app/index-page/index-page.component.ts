@@ -1,4 +1,4 @@
-import { Component, inject } from '@angular/core';
+import { Component, inject, ChangeDetectionStrategy } from '@angular/core';
 import { Observable, map } from 'rxjs';
 import { IndexService } from '../index.service';
 import { RouterModule } from '@angular/router';
@@ -13,11 +13,12 @@ import { LoaderComponent } from '../loader/loader.component';
     ],
     selector: 'app-index-page',
     templateUrl: './index-page.component.html',
+    changeDetection: ChangeDetectionStrategy.OnPush,
     styleUrls: ['./index-page.component.scss']
 })
 export class IndexPageComponent {
-    filtersetsService = inject(IndexService);
 
+    filtersetsService = inject(IndexService);
 
     filtersetGroups: Observable<FiltersetGroup[]>;
 
