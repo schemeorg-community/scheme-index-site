@@ -8,48 +8,93 @@
       <ng-container *ngTemplateOutlet="navbaritem; context: {item: item}"/>
     }
   </ul>
-  <div class="theme-cb-wrapper">
-    <select #themecb class="theme-cb" (change)="onSelectTheme(themecb.value)" [(ngModel)]="selectedTheme">
-      <option value="default">System default</option>
-      <option value="light">Light</option>
-      <option value="dark">Dark</option>
-    </select>
-    theme
-  </div>
 </nav>
 <div class="routeview">
   <router-outlet></router-outlet>
 </div>
 
 <ng-template #navbaritem let-item="item">
-  <li class="navbar__list-item">
+  <li class="navbar__list-item" [ngClass]="extraNavItemClass(item)">
     @if (item.isActive) {
       <span class="navbar__link navbar__link--active">
         @if (item.icon) {
           <fa-icon [icon]="item.icon"></fa-icon>
           }&nbsp;{{item.label}}
         </span>
-      }
-      @if (!item.isActive && item.link) {
-        <a [routerLink]="item.link" class="navbar__link navbar__link--clickable">
-          @if (item.icon) {
-            <fa-icon [icon]="item.icon"></fa-icon>
-            }&nbsp;{{item.label}}
-          </a>
+    }
+    @if (!item.isActive && item.link) {
+      <a [routerLink]="item.link" class="navbar__link navbar__link--clickable">
+        @if (item.icon) {
+          <fa-icon [icon]="item.icon"></fa-icon>
+        }&nbsp;{{item.label}}
+      </a>
+    }
+    @if (!item.isActive && !item.link) {
+      <span class="navbar__link">
+        @if (item.icon) {
+          <fa-icon [icon]="item.icon"></fa-icon>
+        }&nbsp;{{item.label}}
+      </span>
+    }
+    @if (item.items.length > 0) {
+      <ul class="navbar__list navbar__list--nestedlevel popup">
+        @for (item of item.items; track $index) {
+            <ng-container *ngTemplateOutlet="navbaritem; context: {item: item}" />
         }
-        @if (!item.isActive && !item.link) {
-          <span class="navbar__link">
-            @if (item.icon) {
-              <fa-icon [icon]="item.icon"></fa-icon>
-              }&nbsp;{{item.label}}
-            </span>
-          }
-          @if (item.items.length > 0) {
-            <ul class="navbar__list navbar__list--nestedlevel">
-              @for (item of item.items; track $index) {
-                <ng-container *ngTemplateOutlet="navbaritem; context: {item: item}" />
-              }
-            </ul>
-          }
-        </li>
-      </ng-template>
+      </ul>
+    }
+    @if (item.fragment) {
+        <ng-container *ngTemplateOutlet="item.fragment" />
+    }
+  </li>
+</ng-template>
+
+<ng-template #settings>
+    <div class="popup">
+        <form [formGroup]="settingsForm" class="settings__form">
+            <fieldset>
+                <legend>Theme</legend>
+                <label class="checklist-item">
+                    <input class="checklist-item__value-input" type="radio" formControlName="theme" value="default">
+                    &nbsp;<span class="checklist-item__value-text">Default</span>
+                </label>
+                <label class="checklist-item">
+                    <input class="checklist-item__value-input" type="radio" formControlName="theme" value="light">
+                    &nbsp;<span class="checklist-item__value-text">Light</span>
+                </label>
+                <label class="checklist-item">
+                    <input class="checklist-item__value-input" type="radio" formControlName="theme" value="dark">
+                    &nbsp;<span class="checklist-item__value-text">Dark</span>
+                </label>
+            </fieldset>
+            <fieldset>
+                <legend>Pagination</legend>
+                <label class="checklist-item">
+                    <input class="checklist-item__value-input" type="radio" formControlName="pagination" value="10">
+                    &nbsp;<span class="checklist-item__value-text">10</span>
+                </label>
+                <label class="checklist-item">
+                    <input class="checklist-item__value-input" type="radio" formControlName="pagination" value="40">
+                    &nbsp;<span class="checklist-item__value-text">40</span>
+                </label>
+                <label class="checklist-item">
+                    <input class="checklist-item__value-input" type="radio" formControlName="pagination" value="0">
+                    &nbsp;<span class="checklist-item__value-text">unlimited</span>
+                </label>
+            </fieldset>
+        </form>
+    </div>
+<!--
+        <div class="theme-cb-wrapper">
+          <select #themecb class="theme-cb" (change)="onSelectTheme(themecb.value)" [(ngModel)]="selectedTheme">
+            <option value="default">System default</option>
+            <option value="light">Light</option>
+            <option value="dark">Dark</option>
+          </select>
+          theme
+        </div>
+    </div>
+  <li class="navbar__list-item navbar__list-item--righ">
+  </li>
+-->
+</ng-template>
