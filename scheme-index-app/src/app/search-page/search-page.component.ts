@@ -1,4 +1,4 @@
-import { ReplaySubject, Observable, map, combineLatest, first, tap, shareReplay, switchMap } from 'rxjs';
+import { ReplaySubject, Observable, map, combineLatest, first, tap, shareReplay, switchMap, expand, delay, of } from 'rxjs';
 import { Component, ViewChild, ElementRef, inject, ChangeDetectionStrategy } from '@angular/core';
 import { ActivatedRoute, Router, RouterModule } from '@angular/router';
 import { IndexService } from '../index.service';
@@ -114,7 +114,29 @@ export class SearchPageComponent {
                 page: query.page || 1
             };
         }));
-        this.results = this.response.pipe(map(resp => resp.items));
+        this.results = this.response.pipe(
+            map(resp => resp.items)
+            /*,
+            // break it down to chunks
+            // so the app doesn't freeze on very large
+            // content size
+            switchMap(items => {
+                return of(500).pipe(
+                    expand(i => {
+                        if (i - 500 > items.length)
+                            return of();
+                        return of(i + 500).pipe(
+                            delay(30)
+                        );
+                    }),
+                    map(i => {
+                        const l = Math.min(i, items.length);
+                        return items.slice(0, l);
+                    })
+                )
+            })
+           */
+        );
     }
 
     onFacetCollapseChange(collapsed: boolean) {

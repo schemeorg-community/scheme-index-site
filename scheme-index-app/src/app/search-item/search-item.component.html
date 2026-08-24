@@ -122,15 +122,15 @@
             /
         }
     }
-    <span>&ngsp;{{param.name}}</span><!--
+    &ngsp;{{param.name}}<!--
  -->)<!--
 -->}
   @if (!param.types.length) {
     @if (param.name === "...") {
         <ng-container *ngTemplateOutlet="ellipsis"></ng-container>
     } @else {
-        <span>{{param.name}}</span>
-    }
+        {{param.name}}<!--
+ -->}
   }
 </ng-template>
 
@@ -157,13 +157,10 @@
   }
   @if (return.kind === 'return' && isAuxiliaryType(return.type) && return.type !== '#f') {
     @if (return.type === '*') {
-        <span>&#x2217;</span>
-    } @else {
-        @if (return.type === '...') {
-            <ng-container *ngTemplateOutlet="ellipsis"></ng-container>
-        } @else {
-            <span>{{return.type}}</span>
-        }
+        &#x2217;<!--
+ -->}
+    @if (return.type === '...') {
+        <ng-container *ngTemplateOutlet="ellipsis"></ng-container>
     }
   }
   @if (return.kind === 'values') {
