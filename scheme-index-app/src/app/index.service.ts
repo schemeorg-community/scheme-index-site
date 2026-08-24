@@ -61,7 +61,7 @@ export class IndexService {
       this.filtersets$ = this.loadFilters()
         .pipe(
             tap(() => this._filtersetsReady$.next(true)),
-            shareReplay()
+            shareReplay(1)
         );
       this.filtersetFilter$ = this.filtersets$.pipe(map(filters => {
           const result: {[index: string]: Set} = {};
@@ -93,7 +93,7 @@ export class IndexService {
                   etag: data.etag
               };
           }),
-          shareReplay()
+          shareReplay(1)
       );
 
       this.theme$ = this._theme$.pipe(
