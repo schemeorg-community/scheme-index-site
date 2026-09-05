@@ -1,4 +1,4 @@
-import { ReplaySubject, Observable, map, combineLatest, first, tap, shareReplay, switchMap, expand, delay, of } from 'rxjs';
+import { Observable, map, combineLatest, tap, shareReplay, switchMap  } from 'rxjs';
 import { Component, ViewChild, ElementRef, inject, ChangeDetectionStrategy } from '@angular/core';
 import { ActivatedRoute, Router, RouterModule } from '@angular/router';
 import { IndexService } from '../index.service';
