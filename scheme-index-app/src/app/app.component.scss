@@ -13,19 +13,22 @@
     overflow: auto;
 }
 
-@keyframes animate-submenu-enter {
-    0% {
-        opacity: 0.1;
-        transform: translate(0,-20px);
-    }
-    100% {
-    }
+.popup {
+     grid-template-columns: 1fr 1fr;
+     color: var(--accent-color);
+     background-color: var(--bg-color2);
+     border: solid 2px var(--accent-color);
+     border-radius: 5px;
+     position: absolute;
+     z-index: 10000;
+     top: 100%;
+     padding: 0.5em;
+     box-shadow: rgba(0, 0, 0, 0.2) 0px 8px 24px;
+     clip-path: inset(0px -24px -24px -24px);
+     overflow: hidden;
 }
 
 .navbar {
-
-    display: flex;
-    align-items: flex-start;
 
     background-color: var(--nav-bg-color);
 
@@ -41,29 +44,16 @@
 
         &--nestedlevel {
             display: none;
-            grid-template-columns: 1fr 1fr;
-            color: var(--accent-color);
-            background-color: var(--bg-color2);
-            border: solid 2px var(--accent-color);
-            border-radius: 5px;
-            position: absolute;
-            z-index: 10000;
-            top: 100%;
-            padding: 0.5em;
-            box-shadow: rgba(0, 0, 0, 0.2) 0px 8px 24px;
-            clip-path: inset(0px -24px -24px -24px);
-            animation-duration: 0.7s;
-            animation-name: animate-submenu-enter;
-            animation-delay: 0.0s;
-            animation-fill-mode: backwards;
-            animation-timing-function: cubic-bezier(0.13, 0.79, 0.09, 1.03);
-            overflow: hidden;
         }
     }
 
     &__list-item {
         position: relative;
         display: inline-block;
+    }
+
+    &__list-item--right {
+        margin-left: auto;
     }
 
     &__link {
@@ -94,9 +84,33 @@
     }
 }
 
-.navbar__list--toplevel .navbar__list-item:hover .navbar__list--nestedlevel
+.navbar__list-item:hover .navbar__list--nestedlevel
 {
     display: grid;
+}
+
+.settings .popup {
+    display: none;
+    right: calc(0% + 2px);
+}
+
+.settings:hover .popup {
+    display: block;
+}
+
+.settings {
+
+    margin-left: auto;
+
+    &__form fieldset {
+      display: flex;
+      flex-direction: column;
+      align-items: stretch;
+    }
+
+    &__form label {
+      white-space: nowrap;
+    }
 }
 
 .theme-cb-wrapper {

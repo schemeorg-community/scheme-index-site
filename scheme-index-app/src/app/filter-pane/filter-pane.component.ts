@@ -1,5 +1,5 @@
 import { Subject, ReplaySubject, combineLatest, first, debounceTime } from 'rxjs';
-import { Component, Input, Output, EventEmitter, HostListener, ElementRef, ViewChild, inject } from '@angular/core';
+import { Component, Input, Output, EventEmitter, HostListener, ElementRef, ViewChild, inject, ChangeDetectionStrategy } from '@angular/core';
 import { IndexQuery, IndexResponse, ResponseFacetValue } from '../index.types';
 import { faMagnifyingGlass, faFolderOpen, faFolderClosed, faCircleChevronLeft, faCircleChevronRight } from '@fortawesome/free-solid-svg-icons';
 import { IndexService } from '../index.service';
@@ -10,17 +10,18 @@ import { FacetFilterPipe } from '../facet-filter.pipe';
 
 @Component({
     imports: [
-    FormsModule,
-    FontAwesomeModule,
-    FacetFilterPipe
-],
+        FormsModule,
+        FontAwesomeModule,
+        FacetFilterPipe
+    ],
     selector: 'app-filter-pane',
     templateUrl: './filter-pane.component.html',
-    styleUrls: ['./filter-pane.component.scss']
+    styleUrls: ['./filter-pane.component.scss'],
+    changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class FilterPaneComponent {
-  private filtersetSvc = inject(IndexService);
 
+  private filtersetSvc = inject(IndexService);
 
   @Input()
   collapsed = false;
@@ -48,7 +49,8 @@ export class FilterPaneComponent {
   searchForm!: ElementRef;
 
   @HostListener('window:keydown.control./', ['$event'])
-  focusQueryField(event: KeyboardEvent) {
+  focusQueryField(evt: Event) {
+      const event = evt as KeyboardEvent;
       event.preventDefault();
       this.queryTextfield.nativeElement.focus();
   }

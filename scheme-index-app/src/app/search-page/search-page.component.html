@@ -10,10 +10,10 @@
         class="search-page__controls"
         [class.search-page__controls--hidden]="facetCollapsed" />
     }
-    <section class="search-page__search-result definition-list animated-enter" aria-label="Search results" #results_container>
+    <section class="search-page__search-result definition-list" aria-label="Search results" #results_container>
       @if (results | async; as results) {
         <div class="definition-list__content-shadow">
-          @for (result of results; track result) {
+          @for (result of results; track $index) {
             <app-search-item [searchitem]="result" [routerResolver]="seachItemRouterResolver.bind(this)"/>
           }
         </div>

@@ -1,8 +1,8 @@
 FROM schemers/chicken:5 as chicken
 RUN chicken-install json matchable srfi-1
 COPY ./scheme-index-util /app/scheme-index-util
-COPY ./types /app/types
-COPY ./filters /app/filters
+COPY ./data/types /app/types
+COPY ./data/filters /app/filters
 WORKDIR /app/scheme-index-util
 RUN csc buildtypes.scm
 RUN csc buildfilters.scm

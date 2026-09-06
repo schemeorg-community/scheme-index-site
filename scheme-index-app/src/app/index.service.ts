@@ -1,7 +1,7 @@
 import { Injectable, inject } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { IndexResponse, IndexQuery, Filterset, SearchItem, SearchItemSingle, FuncSignatureReturn, ResponseFacetValue } from './index.types';
-import { Observable, shareReplay, map, combineLatest, BehaviorSubject, of, mergeMap, firstValueFrom, tap } from 'rxjs';
+import { Observable, shareReplay, map, combineLatest, BehaviorSubject, Subject, of, mergeMap, firstValueFrom, tap, startWith } from 'rxjs';
 import MiniSearch, { Options } from 'node_modules/minisearch/dist/es';
 
 @Injectable({
@@ -11,11 +11,13 @@ export class IndexService {
   private http = inject(HttpClient);
 
 
-  public filtersets$: Observable<Filterset[]>;
-  public filtersetsReady$: Observable<boolean>;
-  public filtersetNameMap$: Observable<{[key: string]: string}>;
-  public searcher$: Observable<Searcher>;
-  public searcherReady$: Observable<boolean>;
+  filtersets$: Observable<Filterset[]>;
+  filtersetsReady$: Observable<boolean>;
+  filtersetNameMap$: Observable<{[key: string]: string}>;
+  searcher$: Observable<Searcher>;
+  searcherReady$: Observable<boolean>;
+  theme$: Observable<string>;
+  pageSize$: Observable<number>;
 
   private filtersetFilter$: Observable<{[index: string]: Set}>;
   private _searcher$: BehaviorSubject<Searcher | null>;
@@ -23,6 +25,9 @@ export class IndexService {
   private data$: Observable<{ content: SearchItemIndexingWrap[]; etag: string; }>;
   private _filtersetsReady$: BehaviorSubject<boolean>;
   private _searcherReady$: BehaviorSubject<boolean>;
+
+  private _theme$ = new Subject<string>();
+  private _pageSize$ = new Subject<number>();
 
   constructor() {
 
@@ -56,7 +61,7 @@ export class IndexService {
       this.filtersets$ = this.loadFilters()
         .pipe(
             tap(() => this._filtersetsReady$.next(true)),
-            shareReplay()
+            shareReplay(1)
         );
       this.filtersetFilter$ = this.filtersets$.pipe(map(filters => {
           const result: {[index: string]: Set} = {};
@@ -88,7 +93,16 @@ export class IndexService {
                   etag: data.etag
               };
           }),
-          shareReplay()
+          shareReplay(1)
+      );
+
+      this.theme$ = this._theme$.pipe(
+          startWith(window.localStorage.getItem('theme') || 'default'),
+          shareReplay(1)
+      );
+      this.pageSize$ = this._pageSize$.pipe(
+          startWith(+(window.localStorage.getItem('pageSize') || '40')),
+          shareReplay(1)
       );
 
       this.loadSearcher(false);
@@ -163,9 +177,9 @@ export class IndexService {
   }
 
   public query(request: IndexQuery) {
-      return combineLatest([this.searcher$, this.filtersetFilter$])
-        .pipe(map(([searcher, filters]) => {
-            return this.executeSearch(searcher.searcher, searcher.all, request, filters[request.filterset]);
+      return combineLatest([this.searcher$, this.filtersetFilter$, this.pageSize$])
+        .pipe(map(([searcher, filters, pageSize]) => {
+            return this.executeSearch(searcher.searcher, searcher.all, request, pageSize, filters[request.filterset]);
         }));
   }
 
@@ -187,7 +201,7 @@ export class IndexService {
         }));
   }
 
-  private executeSearch(searcher: MiniSearch<SearchItemIndexingWrap>, all: SearchItemIndexingWrap[], request: IndexQuery, libs: Set): IndexResponse {
+  private executeSearch(searcher: MiniSearch<SearchItemIndexingWrap>, all: SearchItemIndexingWrap[], request: IndexQuery, pageSize: number, libs: Set): IndexResponse {
       function recordFacetValue(facet: {[index: string]: number }, value: string) {
           if (value == '#f')
               return;
@@ -235,8 +249,15 @@ export class IndexService {
       } else {
           found = all;
       }
-      const start = 40 * ((request.page || 1) - 1);
-      const end = start + 40;
+      let start: number;
+      let end: number;
+      if (pageSize == 0) {
+          start = 0;
+          end = found.length;
+      } else {
+          start = pageSize * ((request.page || 1) - 1);
+          end = start + pageSize;
+      }
       const returnData = [];
       let count = 0;
       top:
@@ -382,6 +403,17 @@ export class IndexService {
           returns
       };
   }
+
+  setPageSize(p: number) {
+      window.localStorage.setItem('pageSize', '' + p);
+      this._pageSize$.next(p);
+  }
+
+  setTheme(t: string) {
+      window.localStorage.setItem('theme', t);
+      this._theme$.next(t);
+  }
+
 
 }
 

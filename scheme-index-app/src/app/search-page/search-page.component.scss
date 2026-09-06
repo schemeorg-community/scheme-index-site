@@ -14,6 +14,7 @@ app-search-item + app-search-item {
 
 app-search-item {
     display: block;
+    content-visibility: auto;
 }
 
 app-pager {
@@ -34,8 +35,6 @@ loader {
     &__controls {
         min-width: 250px;
         flex: 1;
-        transition-property: flex;
-        transition-duration: 0.2s;
         overflow: auto;
     }
 

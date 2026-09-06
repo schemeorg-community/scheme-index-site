@@ -1,6 +1,0 @@
-(((name . "file-exists?")
-  (signature lambda ((string? filename)) boolean?)
-  (desc . "Filename must be a file name (see section 8.2.1). The file-exists? procedure returns #t if the named file exists at the time the procedure is called, #f otherwise."))
- ((name . "delete-file")
-  (signature lambda ((string? filename)) undefined)
-  (desc . "Filename must be a file name (see section 8.2.1). The delete-file procedure deletes the named file if it exists and can be deleted, and returns unspecified values. If the file does not exist or cannot be deleted, an exception with condition type &i/o-filename is raised.")))
