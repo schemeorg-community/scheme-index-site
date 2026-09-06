@@ -1,0 +1,19 @@
+name: 'Sync data from upstream'
+
+on:
+  # Allows you to run this workflow manually from the Actions tab or through HTTP API
+  workflow_dispatch:
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v4
+    - name: update submodules
+      run: |
+        git submodule update --remote
+    - name: Commit update
+      run: |
+        git config --global user.name 'github-actions'
+        git config --global user.email 'github-actions@github.com'
+        git commit -am "Update upstream scheme-index data" && git push || echo "No changes to commit"
