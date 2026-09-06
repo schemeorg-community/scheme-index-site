@@ -1,4 +1,4 @@
-import { ReplaySubject, Observable, map, combineLatest, first } from 'rxjs';
+import { Observable, map, combineLatest, tap, shareReplay, switchMap  } from 'rxjs';
 import { Component, ViewChild, ElementRef, inject, ChangeDetectionStrategy } from '@angular/core';
 import { ActivatedRoute, Router, RouterModule } from '@angular/router';
 import { IndexService } from '../index.service';
@@ -36,7 +36,7 @@ export class SearchPageComponent {
 
     filterset = '';
     indexQuery: Observable<IndexQuery>;
-    response = new ReplaySubject<IndexResponse>(1);
+    response: Observable<IndexResponse>;
     filterpaneParams: Observable<FilterpaneParams>;
     pagerParams: Observable<PagerParams | null>;
     results: Observable<SearchItem[]>;
@@ -78,34 +78,65 @@ export class SearchPageComponent {
                 returns
             };
         }));
-        this.indexQuery.subscribe(q => {
-            svc.query(q).pipe(first()).subscribe(resp => this.response.next(resp));
-            // collapse filter panel for small screens on query
-            if (this.svc.facetCollapseOnSearch()) {
-                this.facetCollapsed = true;
-            }
-            if (this.resultsContainer)
-                this.resultsContainer.nativeElement.scroll({ 
-                    top: 0, 
-                    left: 0
-                });
-        });
+        this.response = this.indexQuery.pipe(
+            switchMap(q => svc.query(q)),
+            tap(() => {
+                // collapse filter panel for small screens on query
+                if (this.svc.facetCollapseOnSearch()) {
+                    this.facetCollapsed = true;
+                }
+                if (this.resultsContainer)
+                    this.resultsContainer.nativeElement.scroll({ 
+                        top: 0, 
+                        left: 0
+                    });
+            }),
+            shareReplay(1)
+        );
         this.filterpaneParams = combineLatest([this.indexQuery, this.response]).pipe(map(([query, response]) => {
             return {
                 query,
                 response
             };
         }));
-        this.pagerParams = combineLatest([this.indexQuery, this.response]).pipe(map(([query, response]) => {
+        this.pagerParams = combineLatest([
+            this.indexQuery, 
+            this.response,
+            svc.pageSize$
+        ]).pipe(map(([query, response, pageSize]) => {
+            if (pageSize == 0)
+                return null;
             if (!response.total)
                 return null;
             return {
-                pageSize: 40,
+                pageSize: pageSize,
                 total: response.total,
                 page: query.page || 1
             };
         }));
-        this.results = this.response.pipe(map(resp => resp.items));
+        this.results = this.response.pipe(
+            map(resp => resp.items)
+            /*,
+            // break it down to chunks
+            // so the app doesn't freeze on very large
+            // content size
+            switchMap(items => {
+                return of(500).pipe(
+                    expand(i => {
+                        if (i - 500 > items.length)
+                            return of();
+                        return of(i + 500).pipe(
+                            delay(30)
+                        );
+                    }),
+                    map(i => {
+                        const l = Math.min(i, items.length);
+                        return items.slice(0, l);
+                    })
+                )
+            })
+           */
+        );
     }
 
     onFacetCollapseChange(collapsed: boolean) {
