@@ -1,0 +1,44 @@
+name: 'Build and deploy on push to master'
+on:
+  push:
+    branches:
+      - 'master'
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          submodules: true  
+      - uses: docker/build-push-action@v6
+        with:
+          push: false
+          tags: 'scheme-index:latest'
+          file: ./build/Dockerfile
+      - run: |
+          docker create --name dummy scheme-index:latest
+          docker cp dummy:/schemeindex.zip /tmp/schemeindex.zip
+          docker rm -f dummy
+      - uses: actions/upload-artifact@v4
+        with:
+          name: schemeindex
+          path: /tmp/schemeindex.zip
+
+  deploy_rsync:
+    needs:
+      - build
+    runs-on: ubuntu-latest
+    environment: Prod
+    steps:
+      - uses: actions/checkout@v4
+      - uses: webfactory/ssh-agent@v0.9.0
+        with:
+            ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }}
+      - uses: actions/download-artifact@v4
+        with:
+          name: schemeindex
+          path: build
+      - run: |
+          rsync -e "ssh -o StrictHostKeyChecking=no" $GITHUB_WORKSPACE/build/schemeindex.zip prod-index@tuonela.scheme.org:/production/index/update/schemeindex.zip
+          ssh prod-index@tuonela.scheme.org 'cd ~ ; bash install-update.sh'
