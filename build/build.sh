@@ -17,6 +17,12 @@ echo 'Building scheme index app'
 cd $ROOT/scheme-index-app/
 npm install
 npm run build
+npm run build-dash
+
+echo 'Zipping dashset' 
+cd $ROOT/scheme-index-app/dist/dash/docsets
+mkdir -p $ROOT/scheme-index-app/dist/scheme-index/browser/downloads
+zip -r $ROOT/scheme-index-app/dist/scheme-index/browser/downloads/scheme_index.docset.zip *
 
 echo 'Zipping result'
 cd $ROOT/scheme-index-app/dist/scheme-index/browser

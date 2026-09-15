@@ -15,7 +15,20 @@ function mangle(name: string): string {
 }
 
 async function main() {
-  const dom = new JSDOM('<!DOCTYPE html><html><head><meta charset="utf-8"></head><body class="theme-dark"></body></html>');
+  const dom = new JSDOM(`<!DOCTYPE html>
+    <html>
+      <head>
+        <meta charset="utf-8">
+        <link rel="stylesheet" href="../styles.css">
+        <style>
+          body {
+            background-color: var(--bg-color2);
+          }
+        </style>
+      </head>
+      <body class="theme-dark">
+      </body>
+    </html>`);
   const window = dom.window;
   
   globalThis.document = window.document;
@@ -85,7 +98,7 @@ async function main() {
   db.exec('COMMIT');
 
   fs.writeFileSync(docsetRoot + '/Contents/Info.plist',
-   `<?xml version="1.0" encoding="UTF-8"?>
+    `<?xml version="1.0" encoding="UTF-8"?>
     <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
     <plist version="1.0">
     <dict>
@@ -97,8 +110,40 @@ async function main() {
     <string>Scheme</string>
     <key>isDashDocset</key>
     <true/>
+    <key>dashIndexFilePath</key>
+    <string>index.html</string>
     </dict>
-    </plist>`)
+    </plist>`);
+
+  fs.copyFileSync('./dist/dash/browser/styles.css', `${documentsRoot}/styles.css`);
+  fs.cpSync('./dist/dash/browser/media', `${documentsRoot}/media`, { recursive: true });
+  fs.writeFileSync(`${documentsRoot}/index.html`, `
+    <!DOCTYPE html>
+    <html>
+      <head>
+        <meta charset="utf-8">
+        <link rel="stylesheet" href="styles.css">
+        <style>
+          body {
+            font-family: Roboto;
+            background-color: var(--bg-color);
+            color: var(--text-color-against-bg);
+            padding: 1em;
+          }
+          h1 {
+            color: var(--accent-color);
+          }
+          a {
+            color: var(--secondary-color);
+          }
+        </style>
+      </head>
+      <body class="theme-dark">
+        <h1>Scheme (lisp) docset</h1>
+        <p>Generated from content on <a href="https://index.scheme.org">index.scheme.org</a>.</p>
+      </body>
+    </html>
+    `);
 
   db.close();
   

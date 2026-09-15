@@ -15,21 +15,8 @@ import { SearchItemComponent } from '../search-item/search-item.component';
   `,
   encapsulation: ViewEncapsulation.None,
   styles: `
-    .theme-dark {
-        --text-color-against-accent: black;
-        --text-color-against-bg: white;
-        --text-color-muted: #ccc;
-        --bg-color: #303030;
-        --bg-color2: #404040;
-        --accent-color: #e77;
-        --secondary-color: #aae;
-        --tertary-color: #6d6;
-        --nav-bg-color: var(--bg-color);
-        --nav-text-color: var(--text-color-against-bg);
-        --tag-color: white;
-        --tag-bg-color: #555;
-    }
     app-search-item {
+        font-family: Roboto;
         color: var(--text-color-against-bg);
     }
   `

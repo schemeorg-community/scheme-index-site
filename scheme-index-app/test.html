@@ -1,0 +1,152 @@
+<!DOCTYPE html><html><head><style>/* angular:styles/component:scss;f2d35bf3d39bba51b2bc2aff23d402065627348447dede2e2ca6c5c8e55dbb13;/home/arvydas/ProgrammingProjects/Scheme/scheme-index-site/scheme-index-app/src/app/dash-entry-page/dash-entry-page.component.ts */
+.theme-dark {
+  --text-color-against-accent: black;
+  --text-color-against-bg: white;
+  --text-color-muted: #ccc;
+  --bg-color: #303030;
+  --bg-color2: #404040;
+  --accent-color: #e77;
+  --secondary-color: #aae;
+  --tertary-color: #6d6;
+  --nav-bg-color: var(--bg-color);
+  --nav-text-color: var(--text-color-against-bg);
+  --tag-color: white;
+  --tag-bg-color: #555;
+}
+app-search-item {
+  color: var(--text-color-against-bg);
+}
+</style><style>
+.search-item[_ngcontent-ng-c2599745148] {
+  background-color: var(--bg-color2);
+  padding: 1em;
+  line-height: 1.5em;
+}
+.search-item__head[_ngcontent-ng-c2599745148] {
+  display: flex;
+  justify-items: center;
+}
+.search-item__entry[_ngcontent-ng-c2599745148] {
+  display: flex;
+  flex-direction: column;
+}
+.search-item__lib[_ngcontent-ng-c2599745148] {
+  font-size: 0.8em;
+  margin-bottom: 0.8em;
+}
+.search-item__lib-link[_ngcontent-ng-c2599745148] {
+  color: var(--secondary-color);
+  text-decoration: none;
+}
+.search-item__lib-link[_ngcontent-ng-c2599745148]:hover {
+  text-decoration: underline;
+}
+.search-item__main-signature[_ngcontent-ng-c2599745148] {
+  flex: 1;
+  font-size: 1.5em;
+}
+.search-item__block[_ngcontent-ng-c2599745148] {
+  margin-top: 0.8em;
+}
+.search-item__description[_ngcontent-ng-c2599745148] {
+  white-space: pre-wrap;
+  color: var(--text-color-muted);
+}
+.search-item__spec-value-field-name[_ngcontent-ng-c2599745148] {
+  color: var(--text-color-muted);
+  font-weight: bold;
+}
+.search-item__spec-value-field-values[_ngcontent-ng-c2599745148] {
+  column-gap: 1em;
+  row-gap: 0.5em;
+}
+.search-item__spec-value-field-value[_ngcontent-ng-c2599745148] {
+  color: var(--tertary-color);
+  font-weight: bold;
+}
+.search-item__spec-value-field-value-desc[_ngcontent-ng-c2599745148] {
+  color: var(--text-color-muted);
+}
+.search-item__parameterized-by[_ngcontent-ng-c2599745148] {
+  font-family: monospace;
+}
+.search-item__param-signature[_ngcontent-ng-c2599745148] {
+  font-size: 1.2em;
+}
+.search-item__subsyntax-rules[_ngcontent-ng-c2599745148] {
+  margin-bottom: 1em;
+}
+.search-item__subsyntax-name-wrapper[_ngcontent-ng-c2599745148] {
+  color: var(--text-color-muted);
+  margin-right: 5px;
+}
+.search-item__subsyntax-name[_ngcontent-ng-c2599745148] {
+  font-weight: bold;
+}
+.search-item__subsyntax-signatures[_ngcontent-ng-c2599745148] {
+  display: grid;
+  font-family: monospace;
+  font-size: 1.2em;
+}
+@media (min-width: 600px) {
+  .search-item__block--subsyntax[_ngcontent-ng-c2599745148]   .search-item__block-header[_ngcontent-ng-c2599745148] {
+    grid-column: 1/span 2;
+  }
+  .search-item__subsyntax-signatures[_ngcontent-ng-c2599745148] {
+    grid-template-columns: auto 1fr;
+  }
+}
+@media not all and (min-width: 600px) {
+  .search-item__subsyntax-signatures[_ngcontent-ng-c2599745148] {
+    grid-template-columns: 1fr;
+  }
+}
+.search-item__block--subsyntax[_ngcontent-ng-c2599745148]   .search-item__block-header[_ngcontent-ng-c2599745148] {
+  margin-bottom: 0.5em;
+}
+.search-item__tags[_ngcontent-ng-c2599745148] {
+  display: flex;
+  align-self: end;
+}
+.search-item__tag[_ngcontent-ng-c2599745148] {
+  padding-left: 0.5em;
+  padding-right: 0.5em;
+  margin-left: 0.5em;
+  border-radius: 5px;
+  text-decoration: none;
+  color: var(--tag-color);
+  background-color: var(--tag-bg-color);
+}
+.search-item__tag[_ngcontent-ng-c2599745148]:hover {
+  text-decoration: underline;
+}
+.signature[_ngcontent-ng-c2599745148] {
+  font-family: monospace;
+}
+.signature__name[_ngcontent-ng-c2599745148] {
+  font-weight: bold;
+  color: var(--accent-color);
+}
+.signature__name--syntax[_ngcontent-ng-c2599745148] {
+  font-weight: bold;
+  color: var(--tertary-color);
+}
+.signature__type[_ngcontent-ng-c2599745148] {
+  font-weight: bold;
+  color: var(--secondary-color);
+}
+.signature__false-literal[_ngcontent-ng-c2599745148] {
+  font-weight: bold;
+  color: var(--tertary-color);
+}
+.signature__syntax[_ngcontent-ng-c2599745148] {
+  font-weight: bold;
+  color: var(--tertary-color);
+}
+.signature__pattern-block[_ngcontent-ng-c2599745148] {
+  display: grid;
+  grid-template-columns: auto 1fr;
+}
+.signature__pattern-block-name[_ngcontent-ng-c2599745148] {
+  margin-right: 1em;
+}</style></head><body class="theme-dark" ng-version="22.1.2"><app-search-item _nghost-ng-c2599745148=""><article _ngcontent-ng-c2599745148="" class="search-item"><div _ngcontent-ng-c2599745148="" class="search-item__lib"><!--container--></div><div _ngcontent-ng-c2599745148="" class="search-item__entry"><div _ngcontent-ng-c2599745148="" class="search-item__head"><div _ngcontent-ng-c2599745148="" class="search-item__main-signature signature"><div _ngcontent-ng-c2599745148=""> (<span _ngcontent-ng-c2599745148="" class="signature__name">*</span><!--container--><!--container-->  (<!--container--><span _ngcontent-ng-c2599745148="" class="signature__type">number?</span><!--container--><!--container--><!--container--><!--container--><!--container--> z)<!--container--><!--container--><!--container--> <!--container--><span _ngcontent-ng-c2599745148="" class="signature__ellipsis">…</span><!--container--><!--container--><!--container--><!--container--><!--container--><!--container-->)  ⟹ <!--container--><!--container--><span _ngcontent-ng-c2599745148="" class="signature__type">number?</span><!--container--><!--container--><!--container--><!--container--><!--container--><!--container--><!--container--><!--container--><!--container--></div><!--container--><!--container--><!--container--><!--container--></div><div _ngcontent-ng-c2599745148="" class="search-item__tags"><!--container--><!--container--></div><!--container--></div><div _ngcontent-ng-c2599745148="" class="search-item__extra-info"><div _ngcontent-ng-c2599745148="" class="search-item__block search-item__block--params"><!--container--></div><!--container--><div _ngcontent-ng-c2599745148="" class="search-item__block search-item__description">This procedure returns the product of its arguments.</div><!--container--></div></div><!--container--><!--container--><!--container--></article><!--container--><!--container--><!--container--><!--container--><!--container--><!--container--><!--container--><!--container--><!--container--><!--container--><!--container--><!--container--><!--container--><!--container--></app-search-item><!--container--></body></html>
