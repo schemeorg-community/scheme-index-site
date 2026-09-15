@@ -14,6 +14,32 @@
       "sourceRoot": "src",
       "prefix": "app",
       "architect": {
+        "dash": {
+          "builder": "@angular/build:application",
+          "options": {
+            "aot": true,
+            "optimization": false,
+            "outputPath": {
+              "base": "dist/dash"
+            },
+            "tsConfig": "tsconfig.app.json",
+            "inlineStyleLanguage": "scss",
+            "assets": [
+              "src/favicon.ico",
+              "src/assets"
+            ],
+            "styles": [
+              "src/styles.scss",
+              "node_modules/@fontsource/roboto/400.css"
+            ],
+            "externalDependencies": [
+              "node:fs",
+              "node:sqlite",
+              "jsdom"
+            ],
+            "browser": "src/dash.ts"
+          }
+        },
         "build": {
           "builder": "@angular/build:application",
           "options": {

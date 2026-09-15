@@ -3,6 +3,8 @@
     <div class="search-item__lib">
       @if (group.lib.link; as link) {
         <a [routerLink]="link.routerLink" [queryParams]="link.queryParams" class="search-item__lib-link">{{group.lib.label}}</a>
+      } @else {
+        <span>{{group.lib.label}}</span>
       }
     </div>
     @for (e of group.entries; track $index) {
@@ -42,7 +44,9 @@
         <div class="search-item__tags">
           @for (tag of item.tags; track $index) {
             @if (tag.link; as link) {
-              <a class="search-item__tag search-item__tag-{{tag.label}}" [routerLink]="link.routerLink" [queryParams]="link.queryParams">{{tag.label}}</a>
+              <a class="search-item__tag search-item__tag--link" [routerLink]="link.routerLink" [queryParams]="link.queryParams">{{tag.label}}</a>
+            } @else {
+              <span class="search-item__tag">{{tag.label}}</span>
             }
           }
         </div>
@@ -104,19 +108,21 @@
 </ng-template>
 
 <ng-template #function_param let-param="param" let-item="item" let-nolink="nolink">
-  @if (param.types.length) {
-    (<!--
+  @if (param.types.length) {<!--
+ -->(<!--
  -->@for (type of param.types; track $index; let last = $last) {
         @if (!nolink && type !== '#f') {
             @if (routerResolver(item, 'param', type); as link) {
                 <a [routerLink]="link.routerLink" [queryParams]="link.queryParams" class="signature__type">{{type}}</a>
+            } @else {
+                <span class="signature__type">{{type}}</span>
             }
-        }
-        @if (nolink && type !== '#f') {
-            <span class="signature__type">{{type}}</span>
-        }
-        @if (type === '#f') {
-            <span class="signature__false-literal">{{type}}</span>
+        } @else {
+            @if (type === '#f') {
+                <span class="signature__false-literal">{{type}}</span>
+            } @else {
+                <span class="signature__type">{{type}}</span>
+            }
         }
         @if (!last) {
             /
@@ -128,9 +134,9 @@
   @if (!param.types.length) {
     @if (param.name === "...") {
         <ng-container *ngTemplateOutlet="ellipsis"></ng-container>
-    } @else {
-        {{param.name}}<!--
- -->}
+    } @else {<!--
+      -->{{param.name}}
+    }
   }
 </ng-template>
 
@@ -146,13 +152,10 @@
     <span class="signature__false-literal">{{return.type}}</span>
   }
   @if (return.kind === 'return' && !isAuxiliaryType(return.type)) {
-    @if (!nolink) {
-      @if (routerResolver(item, 'return', return.type); as link) {
+    @if (!nolink && routerResolver(item, 'return', return.type); as link) {
         <a class="signature__type" [routerLink]="link.routerLink" [queryParams]="link.queryParams">{{return.type}}</a>
-      }
-    }
-    @if (nolink) {
-      <span class="signature__type">{{return.type}}</span>
+    } @else {
+        <span class="signature__type">{{return.type}}</span>
     }
   }
   @if (return.kind === 'return' && isAuxiliaryType(return.type) && return.type !== '#f') {
@@ -209,12 +212,16 @@
 
   <ng-template #vector_signature let-item="item" let-name="name" let-element="element">
     {{name}} &#x21D2;
-    #(<ng-container *ngTemplateOutlet="function_param; context: {item: item, param: element}"/> <ng-container *ngTemplateOutlet="ellipsis"></ng-container>)
+    #(<ng-container *ngTemplateOutlet="function_param; context: {item: item, param: element}"/>
+    &ngsp;<ng-container *ngTemplateOutlet="ellipsis"></ng-container><!--
+ -->)
   </ng-template>
 
   <ng-template #list_signature let-item="item" let-name="name" let-element="element">
     {{name}} &#x21D2;
-    '(<ng-container *ngTemplateOutlet="function_param; context: {item: item, param: element}"/> <ng-container *ngTemplateOutlet="ellipsis"></ng-container>)
+    '(<ng-container *ngTemplateOutlet="function_param; context: {item: item, param: element}"/>
+    &ngsp;<ng-container *ngTemplateOutlet="ellipsis"></ng-container><!--
+ -->)
   </ng-template>
 
   <ng-template #alist_signature let-item="item" let-name="name" let-car="car" let-cdr="cdr">
@@ -222,7 +229,8 @@
     '((<ng-container *ngTemplateOutlet="function_param; context: {item: item, param: car}"/>
     .
     <ng-container *ngTemplateOutlet="function_param; context: {item: item, param: cdr}"/>)
-    <ng-container *ngTemplateOutlet="ellipsis"></ng-container>)
+    <ng-container *ngTemplateOutlet="ellipsis"></ng-container><!--
+ -->)
   </ng-template>
 
   <ng-template #pattern_signature let-name="name" let-literals="literals" let-patterns="patterns">

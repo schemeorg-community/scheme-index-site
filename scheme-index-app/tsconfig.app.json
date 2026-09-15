@@ -6,7 +6,8 @@
     "types": []
   },
   "files": [
-    "src/main.ts"
+    "src/main.ts",
+    "src/dash.ts"
   ],
   "include": [
     "src/**/*.d.ts"
