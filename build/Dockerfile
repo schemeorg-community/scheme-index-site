@@ -20,6 +20,7 @@ COPY . /app
 COPY --from=chicken /app/scheme-index-util/types.json /app/scheme-index-app/src/assets/types.json
 COPY --from=chicken /app/scheme-index-util/filters.json /app/scheme-index-app/src/assets/filters.json
 RUN npm run build
+RUN npm run build-dash
 WORKDIR /app/scheme-index-app/dist/dash/docsets
 RUN mkdir -p /app/scheme-index-app/dist/scheme-index/browser/downloads/
 RUN zip -r /app/scheme-index-app/dist/scheme-index/browser/downloads/scheme_index.docset.zip *
